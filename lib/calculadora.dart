@@ -1,5 +1,6 @@
 import 'package:expressions/expressions.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class Calculadora extends StatefulWidget {
   const Calculadora({super.key});
@@ -28,32 +29,49 @@ class _CalculadoraState extends State<Calculadora> {
 
   void _calcularResultado() {
     try {
-      _resultado = _expressao.split('=').last;
       _resultado = _avaliarExpressao(_expressao).toString();
     } catch (e) {
-      _resultado = 'Erro: não foi possivel calcular';
+      _resultado = 'Erro: não foi possível calcular';
     }
-    setState(() {
-      _resultado = _avaliarExpressao(_expressao).toString();
-    });
+    setState(() {});
   }
 
   double _avaliarExpressao(String expressao) {
     expressao = expressao.replaceAll('x', '*');
     expressao = expressao.replaceAll('÷', '/');
-// Avaliar a espressao com a biblioteca expressions
+    
+    if (expressao.contains('sin')) {
+      return sin(_extrairNumero(expressao) * (pi / 180));
+    } else if (expressao.contains('cos')) {
+      return cos(_extrairNumero(expressao) * (pi / 180));
+    } else if (expressao.contains('tan')) {
+      return tan(_extrairNumero(expressao) * (pi / 180));
+    } else if (expressao.contains('!')) {
+      return _fatorial(_extrairNumero(expressao).toInt()).toDouble();
+    }
+
     ExpressionEvaluator avaliador = const ExpressionEvaluator();
-    double resultado = avaliador.eval(Expression.parse(expressao), {});
-    return resultado;
+    return avaliador.eval(Expression.parse(expressao), {});
+  }
+
+  double _extrairNumero(String expressao) {
+    return double.tryParse(RegExp(r'\d+').firstMatch(expressao)?.group(0) ?? '0') ?? 0;
+  }
+
+  int _fatorial(int n) {
+    if (n <= 1) return 1;
+    return n * _fatorial(n - 1);
   }
 
   Widget _botao(String valor) {
-    return TextButton(
-      child: Text(
-        valor,
-        style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+    return Expanded(
+      child: TextButton(
+        child: Text(
+          valor,
+          style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        ),
+        onPressed: () => _pressionarBotao(valor),
       ),
-      onPressed: () => _pressionarBotao(valor),
     );
   }
 
@@ -78,7 +96,13 @@ class _CalculadoraState extends State<Calculadora> {
           child: GridView.count(
             crossAxisCount: 4,
             childAspectRatio: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
+              _botao('sin'),
+              _botao('cos'),
+              _botao('tan'),
+              _botao('!'),
               _botao('7'),
               _botao('8'),
               _botao('9'),
@@ -103,3 +127,4 @@ class _CalculadoraState extends State<Calculadora> {
     );
   }
 }
+
