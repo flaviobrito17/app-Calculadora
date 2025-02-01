@@ -54,21 +54,21 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(
             child: Container(
-                // Placeholder para layout superior
+                
                 ),
           ),
           Expanded(
-            flex: 6,
+            flex: 14,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: Container(
-                      // Placeholder para primeira coluna
+                  
                       ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 1,
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: Container(
-                      // Placeholder para terceira coluna
+                     
                       ),
                 ),
               ],
@@ -99,16 +99,16 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: Container(
-                // Placeholder para layout inferior
+               
                 ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      //floatingActionButton: FloatingActionButton(
+       // onPressed: _incrementCounter,
+       // tooltip: 'Increment',
+       // child: const Icon(Icons.add),
+     // ),
     );
   }
 }
